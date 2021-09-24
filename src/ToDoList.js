@@ -8,8 +8,13 @@ import {
   ListGroup,
 } from "react-bootstrap";
 import "./ToDoList.css";
+import CompletedList from './CompletedList';
+import { useDispatch } from "react-redux";
+import { UpdateCompletedTask } from "./action";
+
 
 const ToDoList = () => {
+  const dispatch = useDispatch();
   let color = [
     "primary",
     "secondary",
@@ -33,6 +38,7 @@ const ToDoList = () => {
     let newTaskList = [...taskList];
     newTaskList = newTaskList.filter(el => el !== task);
     setTaskList(newTaskList);
+    dispatch(UpdateCompletedTask(task));
   }
   useEffect(() => {
     console.log(taskList)
@@ -61,9 +67,12 @@ const ToDoList = () => {
         <ListGroup>
           {taskList &&
             taskList.map((el,index) => (
-              <ListGroup.Item variant={color[index%7]} onClick={()=>{removeTask(el)}}>{el}</ListGroup.Item>
+              <ListGroup.Item variant={color[index%7]} onClick={()=>{removeTask(el);}}>{el}</ListGroup.Item>
             ))}
         </ListGroup>
+      </Row>
+      <Row>
+        <CompletedList/>
       </Row>
     </Container>
   );
